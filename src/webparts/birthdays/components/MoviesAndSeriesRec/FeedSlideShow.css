@@ -1,0 +1,251 @@
+.feed-slide-container {
+  direction: ltr;
+  width: 101%;
+  padding: 8px;
+  border-radius: 20px;
+  box-shadow: 4px 4px 20px 0 rgba(0, 0, 0, 0.2);
+  background: #fcfcfc;
+  align-self: center;
+}
+
+.feed-slide-container > :first-child {
+  height: 78%;
+}
+
+.feed-slide-container > div > ul.indicators {
+  margin: 0;
+  transform: translate(-12px, -760%) !important;
+}
+
+.feed-each-slide {
+  position: relative;
+}
+.feed-each-slide:hover {
+  cursor: pointer;
+}
+
+.feed-each-slide > .feed-picture {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* background-size: cover; */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-bottom: 1px solid #c4c4c4;
+  /* edit in media queries */
+  height: 200px;
+}
+
+.react-slideshow-container .nav[data-type="prev"] span {
+  margin-left: 5px;
+  border-right: none;
+  border-top: none;
+}
+
+.react-slideshow-container .nav[data-type="next"] span {
+  margin-right: 5px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.feed-slide-description {
+  border-top: none;
+  align-items: center;
+  cursor: auto;
+  width: 100%;
+  height: 35%;
+  display: flex;
+  align-items: start;
+  padding: 9px 10px 0px 0px;
+  gap: 2%;
+  direction: rtl;
+}
+
+.feed-slide-description p {
+  font-family: Rubik;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 21px;
+  text-align: justify;
+  color: #000;
+  font-style: normal;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+
+.feed-slide-likes {
+  cursor: auto;
+  border-top: none;
+  align-items: center;
+  width: 100%;
+  height: 35%;
+  display: flex;
+  align-items: start;
+  padding: 0px 10px 0px 0px;
+  gap: 1%;
+  direction: rtl;
+}
+
+.feed-slide-likes p {
+  font-family: Rubik;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 21px;
+  text-align: justify;
+  color: #000;
+  font-style: normal;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+.feed-slide-comments {
+  border-top: none;
+  align-items: center;
+  width: 100%;
+  height: 35%;
+  display: flex;
+  align-items: start;
+  padding: 9px 10px 0px 0px;
+  gap: 1%;
+  direction: rtl;
+}
+
+.feed-slide-comments p {
+  font-family: Rubik;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 21px;
+  text-align: justify;
+  color: #939393;
+  font-style: normal;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+.feed-slide-create {
+  border-top: none;
+  align-items: center;
+  cursor: auto;
+  width: 100%;
+  height: 35%;
+  display: flex;
+  align-items: start;
+  padding: 9px 10px 0px 0px;
+  gap: 1%;
+  direction: rtl;
+}
+
+.feed-slide-create p {
+  font-family: Rubik;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 21px;
+  text-align: justify;
+  color: #000;
+  font-style: normal;
+  margin: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 90%;
+}
+.modal-content {
+  background-color: unset !important;
+}
+.each-fade {
+  display: flex;
+}
+
+.each-fade .image-container {
+  width: 75%;
+  overflow: hidden;
+}
+
+.each-fade .image-container img {
+  width: 100%;
+  /*  */
+  background-size: cover;
+}
+
+.each-fade h2 {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background: #adceed;
+}
+
+.react-slideshow-container + ul.indicators .each-slideshow-indicator:before {
+  background: #2884ee !important;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.feed-slide-container > div > ul.indicators {
+  transform: translate(-12px, -1189%) !important;
+  margin: 0 !important;
+}
+
+.feed-creator-wrapper {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 5px;
+}
+.feed-creator-wrapper p {
+  color: white;
+  margin-left: 5px;
+}
+.InputComment {
+  margin: 5px;
+}
+input.CommentInput {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 56px;
+  color: #8e8e8e;
+  border: none;
+  border: 1px solid black;
+  border-radius: 40px;
+}
+.profileSharing-creator-wrapper {
+  border-bottom: 0.5px solid #000;
+  display: flex;
+  direction: rtl;
+  padding: 0px 0px 2% 61%;
+  align-items: center;
+}
+
+input.CommentInput:focus,
+:visited {
+  border: none;
+  color: none;
+  background-color: none;
+  border-color: none;
+  outline: 0;
+  box-shadow: none;
+  border: 1px solid black;
+  border-radius: 40px;
+}
+
+.feed-slide-description .author-title {
+  font-weight: bold;
+}
+
+@media (min-width: 576px) {
+  .modal {
+    --bs-modal-margin: 0em !important;
+  }
+}

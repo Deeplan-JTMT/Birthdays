@@ -1,0 +1,628 @@
+// @import '~office-ui-fabric-react/dist/sass/References.scss';
+
+@font-face {
+  font-family: Rubik;
+  src: url(../../assets/Fonts/Rubik-Regular.ttf);
+}
+
+@font-face {
+  font-family: Inter;
+  src: url(../../assets/Fonts/Inter-Regular.ttf);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideSendButton {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(13%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.Feed {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 52%;
+  width: 350px;
+  border-radius: 15px;
+  height: 52%;
+  border-radius: 15px;
+  @import "~bootstrap/dist/css/bootstrap.min.css";
+}
+
+.Title {
+  margin: 8px 0 5px 25px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100;
+  font-size: 24px;
+  line-height: 29px;
+  color: #ffffff;
+}
+
+.indicator {
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+  border: 1px #666 solid;
+  margin: 0;
+}
+
+.LeftArrow {
+  background-image: url(../../assets/LeftArrow.png);
+  background-repeat: no-repeat;
+}
+
+.RightArrow {
+  background-image: url(../../assets/RightArrow.png);
+  background-repeat: no-repeat;
+}
+
+.ModalBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+
+.ModalImg {
+  max-height: 80vh;
+  width: 50%;
+  float: right;
+  margin-left: 3%;
+  margin-bottom: 3%;
+}
+
+.ModalHeader {
+  text-align: center;
+  h5 {
+    width: 90%;
+    font-size: 33px;
+    padding-left: 1%;
+    color: #000000;
+  }
+
+  button {
+    font-size: 60px;
+    border: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    color: #333;
+  }
+}
+
+.UserPicture {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-left: 6px;
+  object-fit: cover;
+}
+
+.UserDisplayName {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  color: #000000;
+  margin: 0;
+}
+
+.FeedActionsContainer {
+  border-top: none;
+  padding: 5px 8px;
+  display: flex;
+}
+
+.ActionButtons {
+  display: flex;
+  gap: 8px;
+  padding: 10px 0px 0px 5px;
+}
+
+.CommentBox {
+  flex: 1;
+}
+
+.CommentInput {
+  border: none;
+
+  & :focus {
+    color: none;
+    background-color: none;
+    border-color: none;
+    outline: 0;
+    box-shadow: none;
+  }
+
+  &:visited {
+    color: none;
+    background-color: none;
+    border-color: none;
+    outline: 0;
+    box-shadow: none;
+  }
+}
+
+.modalTriangle {
+  position: absolute;
+  top: 99%;
+  right: 30%;
+  width: 100%;
+  height: 18%;
+  background-color: #eeeded;
+  clip-path: polygon(44% 100%, 42% 0, 50% 0);
+}
+
+.popoverContainer {
+  border-radius: 15px;
+  transform: translate3d(680px, -947px, 10px);
+}
+
+.UploadImageLabel {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+  color: #ffffff;
+  cursor: pointer;
+  margin-top: 14px;
+}
+
+.UploadImageContainer {
+  width: 100%;
+  height: 75%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  > img {
+    padding: 10px;
+  }
+}
+
+.SharePostContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.ImageInputsContainer {
+  padding-bottom: 10px;
+}
+
+.PostTitleContainer {
+  // Input & img div
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-top: 1px solid #dbdbdb;
+
+  > :first-child {
+    // Input
+    width: 77%;
+    margin: 1% 4% 2% 7%;
+    background-color: white;
+    border: none;
+  }
+
+  > img {
+    width: 10%;
+    margin: 0 0 0 4%;
+    cursor: pointer;
+    transition: 0.3s;
+    animation: slideSendButton 1s infinite;
+
+    &:hover {
+      animation-play-state: paused;
+    }
+  }
+}
+
+.UploadImage {
+  background-image: url(../../assets/UploadImage.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+}
+
+.emailSend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  // Animation
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+.emailMsg {
+  padding: 0 4%;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+  text-align: center;
+}
+
+.emailImg {
+  padding-bottom: 10%;
+}
+
+.redX {
+  display: flex;
+  align-items: flex-end;
+  height: 50%;
+  font-size: 100px;
+  color: red;
+}
+
+.CommentsContainer {
+  display: flex;
+  width: 100%;
+
+  flex-direction: column;
+  overflow: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+  height: 75vh;
+  max-height: 300px; /* Example: Limiting height for overflow */
+  overflow-y: auto; /* Enable vertical scroll */
+
+  > .CommentWrapper {
+    padding: 20px 10px;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  :last-child {
+    border-bottom: none;
+    margin-right: 10px;
+  }
+}
+
+.CommentWrapper {
+  width: 100%;
+  background-color: inherit;
+  display: flex;
+}
+
+.UserPosted {
+  background-color: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.PostComment {
+  background-color: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.CommentUserPicture {
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 25px;
+}
+
+.CommentText {
+  width: 700px;
+
+  margin: 0;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 20px;
+  color: #000000;
+}
+
+.CommentUserDisplayName {
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+  color: rgb(0, 0, 0);
+  margin: 0;
+}
+
+.CommentSuccess {
+  color: #155724;
+  background-color: #d4edda;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding-left: 15px;
+  border: 1px solid #c3e6cb;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 100;
+  font-size: 15px;
+  line-height: 56px;
+  opacity: 1;
+  opacity: 0;
+  transition: opacity 3s;
+
+  // Animation
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+.CommentFailure {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding-left: 15px;
+  border: 1px solid #f5c6cb;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 100;
+  font-size: 15px;
+  line-height: 56px;
+  color: #721c24;
+  background-color: #f8d7da;
+
+  // Animation
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
+.SharePostBtn {
+  // margin-top: 12%;
+  // margin-right: 56%;
+  height: 29px;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 100;
+  width: 100px;
+  font-size: 15px;
+  line-height: 16px;
+}
+
+.SharePostTitle {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 17px;
+  margin-bottom: 10%;
+}
+
+.LinkToFeedPost {
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+}
+
+.PlaceholderLoaderContainer {
+  border-radius: 15px;
+  height: 52%;
+  margin: 0 4.25px 8.5px 8.5px;
+}
+/* Modal and popover styles */
+.FeedModal {
+  max-width: 600px;
+  margin: 50px auto;
+  border-radius: 8px;
+  max-width: 50vw !important;
+  background-color: white;
+  @import "~bootstrap/dist/css/bootstrap.min.css";
+}
+
+.sharePpl {
+  padding: 6% 0px 0px 0px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.ShareBtn {
+  padding: 9%;
+}
+
+// MEDIA
+
+/* Laptop */
+@media screen and (max-width: 1280px) and (min-width: 1024px) {
+  .FeedModal {
+    max-width: 77vw !important;
+  }
+  .CommentsContainer {
+    height: 68vh;
+  }
+}
+
+/* Between laptop and Ipad */
+@media screen and (max-width: 1024px) and (min-width: 820px) {
+  .FeedModal {
+    max-width: 93vw !important;
+  }
+}
+@media screen and (max-width: 820px) {
+  .FeedModal {
+    max-width: 95vw !important;
+  }
+}
+
+/* Assuming you have a CSS module setup, styles.module.css */
+
+.Feed {
+  font-family: "Arial", sans-serif;
+  color: #333;
+}
+
+.CommentWrapper {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.CommentUserPicture {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.CommentUserDisplayName {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.CommentText {
+  margin-bottom: 2px;
+}
+
+.CommentTime {
+  font-size: 12px;
+  color: #999;
+  margin: 0;
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 100;
+  line-height: 16px;
+  margin-right: 0px !important;
+}
+
+.CommentInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  margin-top: 10px;
+}
+
+.CommentInput:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.CommentSuccess {
+  color: green;
+}
+
+.CommentFailure {
+  color: red;
+}
+
+.ModalHeader {
+  border-bottom: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.InputComment {
+  padding: 10px 20px;
+  border-top: 1px solid #eee;
+}
+
+/* Additional styles for cleaner UI */
+
+.CommentsContainer::-webkit-scrollbar {
+  width: 5px;
+}
+
+.CommentsContainer::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.CommentsContainer::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+.PostComment {
+  flex: 1;
+  word-wrap: break-word; /* Ensure long words break to the next line */
+  overflow-wrap: break-word; /* Handle long unbreakable words */
+  white-space: pre-wrap; /* Ensure that whitespace is respected, useful for formatted text */
+}
+
+.sharePopover {
+  display: flex;
+}
+.modalBody {
+  height: 30vh;
+  background-color: #e5f3ff;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+@media (max-width: 1200px) {
+  .Feed {
+    width: 350px;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .Feed {
+    width: 600px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .Feed {
+    width: 320px;
+  }
+}

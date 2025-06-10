@@ -1,0 +1,65 @@
+.moviePreviewModalScreen {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1300;
+}
+
+.moviePreviewModal {
+    display: flex;
+    gap: 1em;
+    min-width: 400px;
+    max-width: 50%;
+    border: 1px solid rgba(128, 128, 128, 0.3);
+    border-radius: 8px;
+    background-color: white;
+    padding: 1em;
+}
+
+.movieContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1em;
+    gap: 1em;
+    width: 60%;
+}
+
+.movieContentText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1em;
+    > :first-child {
+        font-size: 1.5em;
+        font-weight: bold;
+    }
+    > :nth-child(2) {
+        font-size: 1.2em;
+    }
+}
+
+.movieImg {
+    width: 40%;
+    object-fit: contain;
+}
+
+.movieAuthor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+    width: 100%;
+    height: 30px;
+    > img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
+}
