@@ -31,6 +31,9 @@ export interface IBirthdaysWebPartProps {
   SpotlightId: string;
   MoviesAndSeriesId: string;
   SpotlightInterval: number;
+
+  GTMarketListID: string;
+  GTMarketImageListId: string;
 }
 
 export default class BirthdaysWebPart extends BaseClientSideWebPart<IBirthdaysWebPartProps> {
@@ -57,6 +60,9 @@ export default class BirthdaysWebPart extends BaseClientSideWebPart<IBirthdaysWe
 
         SpotlightId: this.properties.SpotlightId,
         SpotlightInterval: this.properties.SpotlightInterval,
+
+        GTMarketListID: this.properties.GTMarketListID,
+        GTMarketImageListId: this.properties.GTMarketImageListId,
       }
     );
 
@@ -208,6 +214,30 @@ export default class BirthdaysWebPart extends BaseClientSideWebPart<IBirthdaysWe
                   description: "Spotlight Interval",
                   value: this.properties.SpotlightInterval,
                   disabled: false,
+                }),
+                PropertyFieldListPicker("GTMarketListID", {
+                  label: "Select GT Market list",
+                  selectedList: this.properties.GTMarketListID,
+                  includeHidden: false,
+                  orderBy: PropertyFieldListPickerOrderBy.Title,
+                  disabled: false,
+                  onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
+                  properties: this.properties,
+                  context: this.context as any,
+                  deferredValidationTime: 0,
+                  key: "GTMarketListID",
+                }),
+                PropertyFieldListPicker("GTMarketImageListId", {
+                  label: "Select GT Market image list",
+                  selectedList: this.properties.GTMarketListID,
+                  includeHidden: false,
+                  orderBy: PropertyFieldListPickerOrderBy.Title,
+                  disabled: false,
+                  onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
+                  properties: this.properties,
+                  context: this.context as any,
+                  deferredValidationTime: 0,
+                  key: "GTMarketImageListId",
                 }),
               ],
             },

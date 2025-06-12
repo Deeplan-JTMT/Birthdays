@@ -15,6 +15,7 @@ import { PaginationItem } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import * as moment from "moment";
+import GTMarket from "../GTMarket/GTMarket";
 const DefaultProfilePic = require("../../assets/defaultProfilePic.jpg");
 
 export interface IBirthdaysState {
@@ -52,6 +53,8 @@ export default class Birthdays extends React.Component<
   componentDidMount(): void {
     this.getBirthdayList();
     document.addEventListener("click", this.handleDocumentClick);
+    console.log("list: ", this.props.GTMarketListID);
+
   }
   componentWillUnmount(): void {
     // Remove click listener
@@ -282,12 +285,17 @@ export default class Birthdays extends React.Component<
       indexOfLastItem
     );
 
+
     return (
       <section className={` ${styles.Birthdays}`}>
         <div
           style={{ backgroundImage: `url(${this.props.BackgroundImage})` }}
           className={`${styles.BirthdaysBackGroundImage}`}
         >
+          <div className={styles.BirthdaysGTMarketContainer}>
+            <GTMarket context={this.props.context} sp={this.props.sp} gtMarketListId={this.props.GTMarketListID} GTMarketImageListId={this.props.GTMarketImageListId} />
+          </div>
+
           {/* <div>
             <MoviesAndSeries
               sp={this.props.sp}
@@ -296,6 +304,7 @@ export default class Birthdays extends React.Component<
             />
           </div> */}
           <div className={`${styles.BirthdaysLeftContainer}`}>
+
             <div className={`${styles.BirthdaysContainer}`}>
               <div className={`${styles.BirthdaysTitleCon}`}>
                 <div id="bdayTitle" className={`${styles.title}`}>

@@ -1,4 +1,4 @@
-/* div[class='CanvasZone'] {
+div[class='CanvasZone'] {
   width: 100% !important;
 }
 
@@ -67,4 +67,4 @@ div[data-automation-id="CanvasSection"] {
 
 .sp-appBar {
   display: none !important;
-} */
+}
