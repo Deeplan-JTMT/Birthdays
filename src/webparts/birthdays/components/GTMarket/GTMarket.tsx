@@ -44,9 +44,8 @@ export default function GTMarket(props: GTMarketProps) {
     }, [])
 
     async function init() {
-        const urlMap = await getImages();
         const data = await getData();
-        const messages = await getGTMessages(data, urlMap);
+        const messages = await getGTMessages(data);
         setGtMessages(prev => messages);
     }
 
@@ -61,7 +60,8 @@ export default function GTMarket(props: GTMarketProps) {
                     .getById(props.gtMarketListId)
                     .items
                     .skip(rowsidx * MAX_SIZE)
-                    .top(MAX_SIZE)();
+                    .top(MAX_SIZE)
+                    .select("Id", "itemName", "creatorName", "Description", "phoneNumber", "email", "itemImage/serverRelativeUrl")();
                 rowCount = rows.length;
                 rowsidx++;
                 rows.forEach(row => data.push(row))
@@ -76,11 +76,11 @@ export default function GTMarket(props: GTMarketProps) {
 
     async function getGTMessages(
         rows: any[],
-        urlMap: Map<number, string>
     ): Promise<GTMessageType[]> {
         try {
             const currUser: ISiteUserInfo = await props.sp.web.currentUser();
             serCurrentUser(currUser)
+            console.log("rows: ", rows)
             return rows.map((item): GTMessageType => ({
                 creationDate: moment(item.Created).format(DATE_FORMAT).toString(),                   // DateTime → Moment
                 itemName: item.itemName || "",          // fallbacks if field differs
@@ -90,8 +90,8 @@ export default function GTMarket(props: GTMarketProps) {
                 itemDescription: item.Description || "",
                 phoneNumber: item.phoneNumber || "",
                 email: item.email || "",
-                image: urlMap.get(item.imgId) || "",
-                imageId: item.imgId,
+                Image: JSON.parse(item.itemImage)?.serverRelativeUrl || "",
+                // imageId: item.imgId,
             }));
         }
         catch (err) {
@@ -100,35 +100,9 @@ export default function GTMarket(props: GTMarketProps) {
         }
     }
 
-    async function getImages() {
-        const urlMap: Map<number, string> = new Map();
-        let rowsidx = 0;
-        const MAX_SIZE = 5000
-        let rowCount = 1;//initializing with more than 0
-        while (rowCount > 0) {
-            try {
-                let rows = await props.sp.web.lists
-                    .getById(props.GTMarketImageListId)
-                    .items
-                    .select('Id', 'FileRef')
-                    .skip(rowsidx * MAX_SIZE)
-                    .top(MAX_SIZE)();
-                rowCount = rows.length;
-                rowsidx++;
-                rows.forEach(row => urlMap.set(row.Id, row.FileRef))
-            }
-            catch (err) {
-                console.log("error: ", err);
-                break;
-            }
-        }
-        return urlMap;
-    }
-
     async function removeItem(itemId: number, imageId: number | null = null) {
         try {
             await props.sp.web.lists.getById(props.gtMarketListId).items.getById(itemId).recycle();
-            if (imageId) await props.sp.web.lists.getById(props.GTMarketImageListId).items.getById(imageId).recycle();
             setGtMessages(prev => prev.filter(message => message.itemId !== itemId))
         }
         catch (err) {
@@ -195,8 +169,8 @@ export default function GTMarket(props: GTMarketProps) {
                     ).map((message, idx) => (
                         <GTMessage
                             key={`gtMessage${idx}`}
-                            removeItem={message.imageId ?
-                                () => removeItem(message.itemId, message.imageId)
+                            removeItem={message.Image !== "" ?
+                                () => removeItem(message.itemId)
                                 : () => removeItem(message.itemId)
                             }
                             updateOverFlow={updateOverFlow}

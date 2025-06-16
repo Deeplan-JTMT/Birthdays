@@ -5,11 +5,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1301 !important;
+    z-index: 500 !important;
 }
 
 .modalScreen {
     width: fit-content;
+    min-width: 45%;
     height: fit-content;
     background: #fff;
     border-radius: 15px;
@@ -43,5 +44,5 @@
 }
 
 .swal {
-    z-index: 99999 !important;
+    z-index: 999999 !important;
 }

@@ -8,6 +8,7 @@ import { spfi, SPFI } from "@pnp/sp";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
 import { Item } from "@pnp/sp/items";
+import { openErrorModal } from "./SwalUtils";
 
 const requiredFields: (keyof GTMarketFormErrors)[] = [
     "itemName",
@@ -56,27 +57,43 @@ function checkFileType() {
     if (!file) return false;
 
     if (!file.type.startsWith('image/')) {
-        alert('רק קבצי תמונה מותרים');
         input.value = '';
         return false;
     }
     return true;
-
 }
+
+function validateFields(data: GTMarketFormType) {
+    const formErrors: GTMarketFormErrors = {
+        creationDate: false,
+        creatorName: false,
+        email: false,
+        itemDescription: false,
+        itemName: false,
+        phoneNumber: false
+    }
+    requiredFields.forEach(field => formErrors[field] = checkErrors(data[field]))
+    return formErrors;
+}
+
+
 
 
 export async function submitForm(
     context: WebPartContext,
     formData: GTMarketFormType,
-    errors: GTMarketFormErrors,
     GTMarketListId: string,
-    GTMarketImagesListId: string
+    GTMarketImagesListId: string,
+    updateErrors: (errors: GTMarketFormErrors) => void
 ) {
     console.log("form data: ", formData);
 
+    const errors = validateFields(formData)
+    console.log("erorrs: ", errors);
 
-    if (!isValid(errors) || !formData) {
-        return false;
+    if (!formData || !isValid(errors)) {
+        updateErrors(errors);
+        openErrorModal("הטופס אינו תקין");
     }
 
     const sp = getSP(context);
@@ -87,34 +104,31 @@ export async function submitForm(
         phoneNumber: formData.phoneNumber,
         email: formData.email,
         creatorName: formData.creatorName,
-        imgId: formData.imageId || null
     };
 
     if (formData.imageFile !== null) {
         if (!checkFileType()) {
-            return false; // illegal file type
+            openErrorModal("סוג הקובץ אינו תמונה")
+            return 401; // illegal file type
         }
-        const fileBuffer = await formData.imageFile.arrayBuffer()
+
         try {
-            // random uuid in order to allow duplications
-            const uploadResult = await sp.web.lists.getById(GTMarketImagesListId)
-                .rootFolder.files.addUsingPath(crypto.randomUUID(), fileBuffer);
-
-            const item = await uploadResult.file.getItem().then(Item => console.log("item id: ", Item))
-
+            const fileBuffer = await formData.imageFile.arrayBuffer();
         }
         catch (err) {
             console.error("Error uploading image:", err);
-            return false;
+            openErrorModal("העלאת התמונה נכשלה")
+            return 402;
         }
     }
 
     try {
         await sp.web.lists.getById(GTMarketListId).items.add(updateObject);
-        return true;
+        return 200;
     }
     catch (err) {
         console.error("An error occurred during adding file: ", err);
-        return false;
+        openErrorModal("העלאת הקובץ נכשלה")
+        return 403;
     }
 }

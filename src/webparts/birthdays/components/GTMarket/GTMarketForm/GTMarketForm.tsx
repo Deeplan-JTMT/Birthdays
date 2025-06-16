@@ -25,7 +25,6 @@ export default function GTMarketForm(props: GTMarketFormProps) {
             email: props.email !== "" ? props.email : props.CurrentUser?.Email || "",
             CurrentUser: props.CurrentUser,
             image: props.image ? props.image : null,
-            imageId: props.imageId ? props.imageId : null,
             itemDescription: props.itemDescription ? props.itemDescription : "",
             itemId: props.itemId ? props.itemId : 0,
             phoneNumber: props.phoneNumber ? props.phoneNumber : "",
@@ -71,6 +70,7 @@ export default function GTMarketForm(props: GTMarketFormProps) {
             showCancelButton: true,
             confirmButtonText: 'סגירה',
             cancelButtonText: 'ביטול',
+            target: document.body,
             customClass: {
                 container: 'swal'
             }
@@ -152,7 +152,7 @@ export default function GTMarketForm(props: GTMarketFormProps) {
                         variant="contained"
                         style={{ backgroundColor: "#84C792" }}
                         type="submit"
-                        onClick={() => submitForm(props.context, formData, errors, props.GTMarketListId, props.GTMarketImagesListId)}
+                        onClick={() => submitForm(props.context, formData, props.GTMarketListId, props.GTMarketImagesListId, setErrors)}
                     >
                         שמירה
                     </Button>

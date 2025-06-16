@@ -21,9 +21,8 @@ interface GTMessageProps {
     itemDescription: string;
     phoneNumber: string;
     email: string;
-    image: string | null;
-    imageId: number | null;
-    removeItem: (itemId: number, imageId: number | null) => void;
+    Image: string | null;
+    removeItem: (itemId: number) => void;
     updateOverFlow: () => void;
 }
 
@@ -32,7 +31,7 @@ export default function GTMessage(props: GTMessageProps) {
     function openImage() {
         Swal.fire({
             title: props.itemName,
-            imageUrl: props.image,   // can be data-URI, blob, etc.
+            imageUrl: props.Image,   // can be data-URI, blob, etc.
             imageWidth: 600,                           // optional sizing
             imageHeight: 400,
             imageAlt: props.itemName,
@@ -49,7 +48,7 @@ export default function GTMessage(props: GTMessageProps) {
             cancelButtonText: 'ביטול'
         }).then(result => {
             if (result.isConfirmed) {
-                props.removeItem(props.itemId, props.imageId);            // ← runs ONLY on confirmation
+                props.removeItem(props.itemId);            // ← runs ONLY on confirmation
             }
         });
     }
@@ -82,7 +81,7 @@ export default function GTMessage(props: GTMessageProps) {
                         </IconButton>
                     </Tooltip>
 
-                    {props.image && props.image !== "" &&
+                    {props.Image && props.Image !== "" &&
                         < Tooltip title="הצגת תמונה" arrow>
                             <IconButton aria-label="הצגת תמונה"
                                 onClick={openImage}>

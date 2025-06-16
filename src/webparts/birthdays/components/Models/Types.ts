@@ -10,8 +10,8 @@ export type GTMessageType = {
     itemDescription: string;
     phoneNumber: string;
     email: string;
-    image: string | null;
-    imageId: number | null;
+    Image: string | null;
+    // imageId: number | null;
 }
 
 export type GTMarketFormType = {
@@ -24,7 +24,7 @@ export type GTMarketFormType = {
     phoneNumber: string;
     email: string;
     image: string | null;
-    imageId: number | null;
+    // imageId: number | null;
     imageFile: any;
 }
 
