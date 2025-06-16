@@ -1,5 +1,6 @@
 import { Moment } from "moment";
 import { ISiteUserInfo } from "@pnp/sp/site-users/types";
+import { WebPartContext } from "@microsoft/sp-webpart-base";
 
 export interface GTMarketFormProps {
     creationDate: Moment | null;//input value or today date
@@ -14,4 +15,7 @@ export interface GTMarketFormProps {
     imageId: number | null;//id if exist for edit, null for new
     open: boolean;
     closeForm: () => void;
+    context: WebPartContext;
+    GTMarketListId: string;
+    GTMarketImagesListId: string;
 }

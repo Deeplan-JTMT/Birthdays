@@ -25,4 +25,14 @@ export type GTMarketFormType = {
     email: string;
     image: string | null;
     imageId: number | null;
+    imageFile: any;
+}
+
+export type GTMarketFormErrors = {
+    creationDate: boolean;
+    itemName: boolean;
+    creatorName: boolean;
+    itemDescription: boolean;
+    phoneNumber: boolean;
+    email: boolean;
 }

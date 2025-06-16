@@ -13,6 +13,10 @@ import getSP from '../../../PnPjsConfig';
 import * as moment from 'moment';
 import { ISiteUserInfo } from '@pnp/sp/site-users/types';
 import GTMarketForm from './GTMarketForm/GTMarketForm';
+import createCache from '@emotion/cache';
+import rtlPlugin from 'stylis-plugin-rtl';
+import { prefixer } from 'stylis'
+import { CacheProvider } from '@emotion/react';
 
 interface GTMarketProps {
     sp: SPFI;
@@ -20,6 +24,11 @@ interface GTMarketProps {
     gtMarketListId: string;
     GTMarketImageListId: string;
 }
+
+const cacheRtl = createCache({
+    key: 'muirtl',
+    stylisPlugins: [prefixer, rtlPlugin],
+});
 
 const DATE_FORMAT = 'DD/MM/YYYY'
 
@@ -118,8 +127,8 @@ export default function GTMarket(props: GTMarketProps) {
 
     async function removeItem(itemId: number, imageId: number | null = null) {
         try {
-            await props.sp.web.lists.getById(props.gtMarketListId).items.getById(itemId).delete();
-            if (imageId) await props.sp.web.lists.getById(props.GTMarketImageListId).items.getById(imageId).delete();
+            await props.sp.web.lists.getById(props.gtMarketListId).items.getById(itemId).recycle();
+            if (imageId) await props.sp.web.lists.getById(props.GTMarketImageListId).items.getById(imageId).recycle();
             setGtMessages(prev => prev.filter(message => message.itemId !== itemId))
         }
         catch (err) {
@@ -145,54 +154,57 @@ export default function GTMarket(props: GTMarketProps) {
     function closeAdditionForm() { setShowForm(false) }
 
     return (
-        <div className={styles.marketContainer} >
-            {showForm && currentUser && <GTMarketForm CurrentUser={currentUser} creationDate={moment()} creatorName="" email="" image="" imageId={0} itemDescription=""
-                itemId={0} itemName="" open={showForm} phoneNumber="" key="GTMarketForm" closeForm={closeAdditionForm} />}
-            <div className={styles.titleContainer}>
-                <div className={styles.title}>
-                    שוק תן וקח
-                </div>
-                <div className={styles.buttonsContainer}>
-                    <Tooltip title="הוספה" arrow onClick={showAdditionForm}>
-                        <IconButton aria-label="הוספה">
-                            <AddIcon />
-                        </IconButton>
-                    </Tooltip>
-                    {filterList ?
-                        <Tooltip title="כל המוצרים" arrow>
-                            <IconButton aria-label="כל המוצרים"
-                                onClick={flipFilter}
-                            >
-                                <FilterListOffIcon />
+        <CacheProvider value={cacheRtl}>
+            <div className={styles.marketContainer} >
+                {showForm && currentUser && <GTMarketForm CurrentUser={currentUser} creationDate={moment()} creatorName="" email="" image="" imageId={0} itemDescription=""
+                    itemId={0} itemName="" open={showForm} phoneNumber="" key="GTMarketForm" closeForm={closeAdditionForm}
+                    context={props.context} GTMarketListId={props.gtMarketListId} GTMarketImagesListId={props.GTMarketImageListId} />}
+                <div className={styles.titleContainer}>
+                    <div className={styles.title}>
+                        שוק תן וקח
+                    </div>
+                    <div className={styles.buttonsContainer}>
+                        <Tooltip title="הוספה" arrow onClick={showAdditionForm}>
+                            <IconButton aria-label="הוספה">
+                                <AddIcon />
                             </IconButton>
                         </Tooltip>
-                        :
-                        <Tooltip title="המוצרים שלי" arrow>
-                            <IconButton aria-label="המוצרים שלי"
-                                onClick={flipFilter}
-                            >
-                                <FilterListIcon />
-                            </IconButton>
-                        </Tooltip>
-                    }
-                </div>
-            </div>
-            <div className={`${styles.marketBody} ${styles.overFlowAuto}`} id='GTMarketBody'>
-                {(filterList
-                    ? gtMessages.filter(m => m.creatorName === currentUser?.Title)   // my items
-                    : gtMessages                                                    // all items
-                ).map((message, idx) => (
-                    <GTMessage
-                        key={`gtMessage${idx}`}
-                        removeItem={message.imageId ?
-                            () => removeItem(message.itemId, message.imageId)
-                            : () => removeItem(message.itemId)
+                        {filterList ?
+                            <Tooltip title="כל המוצרים" arrow>
+                                <IconButton aria-label="כל המוצרים"
+                                    onClick={flipFilter}
+                                >
+                                    <FilterListOffIcon />
+                                </IconButton>
+                            </Tooltip>
+                            :
+                            <Tooltip title="המוצרים שלי" arrow>
+                                <IconButton aria-label="המוצרים שלי"
+                                    onClick={flipFilter}
+                                >
+                                    <FilterListIcon />
+                                </IconButton>
+                            </Tooltip>
                         }
-                        updateOverFlow={updateOverFlow}
-                        {...message}
-                    />
-                ))}
+                    </div>
+                </div>
+                <div className={`${styles.marketBody} ${styles.overFlowAuto}`} id='GTMarketBody'>
+                    {(filterList
+                        ? gtMessages.filter(m => m.creatorName === currentUser?.Title)   // my items
+                        : gtMessages                                                    // all items
+                    ).map((message, idx) => (
+                        <GTMessage
+                            key={`gtMessage${idx}`}
+                            removeItem={message.imageId ?
+                                () => removeItem(message.itemId, message.imageId)
+                                : () => removeItem(message.itemId)
+                            }
+                            updateOverFlow={updateOverFlow}
+                            {...message}
+                        />
+                    ))}
+                </div>
             </div>
-        </div>
+        </CacheProvider>
     );
 }
