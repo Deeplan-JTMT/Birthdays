@@ -17,6 +17,9 @@ import createCache from '@emotion/cache';
 import rtlPlugin from 'stylis-plugin-rtl';
 import { prefixer } from 'stylis'
 import { CacheProvider } from '@emotion/react';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import MenuIcon from '@mui/icons-material/Menu';
 
 interface GTMarketProps {
     sp: SPFI;
@@ -39,9 +42,20 @@ export default function GTMarket(props: GTMarketProps) {
     const [currentUser, serCurrentUser] = React.useState<ISiteUserInfo>();
     const [overFlow, setOverFlow] = React.useState<boolean>(true);
     const [showForm, setShowForm] = React.useState<boolean>(false);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+
     React.useEffect(() => {
         init();
     }, [])
+
+    const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const menuClose = () => {
+        setAnchorEl(null);
+    };
 
     async function init() {
         const data = await getData();
@@ -138,28 +152,31 @@ export default function GTMarket(props: GTMarketProps) {
                         שוק תן וקח
                     </div>
                     <div className={styles.buttonsContainer}>
-                        <Tooltip title="הוספה" arrow onClick={showAdditionForm}>
-                            <IconButton aria-label="הוספה">
-                                <AddIcon />
+                        <Tooltip title="תפריט פעולות" arrow>
+                            <IconButton onClick={handleMenuClick}>
+                                <MenuIcon />
                             </IconButton>
                         </Tooltip>
-                        {filterList ?
-                            <Tooltip title="כל המוצרים" arrow>
-                                <IconButton aria-label="כל המוצרים"
-                                    onClick={flipFilter}
-                                >
-                                    <FilterListOffIcon />
-                                </IconButton>
-                            </Tooltip>
-                            :
-                            <Tooltip title="המוצרים שלי" arrow>
-                                <IconButton aria-label="המוצרים שלי"
-                                    onClick={flipFilter}
-                                >
-                                    <FilterListIcon />
-                                </IconButton>
-                            </Tooltip>
-                        }
+
+                        <Menu anchorEl={anchorEl} open={open} onClose={menuClose}>
+                            <MenuItem onClick={() => { showAdditionForm(); menuClose(); }}>
+                                <AddIcon sx={{ marginRight: 1 }} />
+                                הוספה
+                            </MenuItem>
+                            <MenuItem onClick={() => { flipFilter(); menuClose(); }}>
+                                {filterList ? (
+                                    <>
+                                        <FilterListOffIcon sx={{ marginRight: 1 }} />
+                                        כל המוצרים
+                                    </>
+                                ) : (
+                                    <>
+                                        <FilterListIcon sx={{ marginRight: 1 }} />
+                                        המוצרים שלי
+                                    </>
+                                )}
+                            </MenuItem>
+                        </Menu>
                     </div>
                 </div>
                 <div className={`${styles.marketBody} ${styles.overFlowAuto}`} id='GTMarketBody'>

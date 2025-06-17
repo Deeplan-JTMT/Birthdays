@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styles from './GTMessage.module.scss';
-import Tooltip from '@mui/material/Tooltip';
+import { Menu, MenuItem, Tooltip } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import {
     Delete as DeleteIcon,
@@ -10,7 +10,7 @@ import {
 } from '@mui/icons-material';
 import { ISiteUserInfo } from '@pnp/sp/site-users/types';
 import Swal from 'sweetalert2';
-
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 interface GTMessageProps {
     creationDate: string;
@@ -27,7 +27,16 @@ interface GTMessageProps {
 }
 
 export default function GTMessage(props: GTMessageProps) {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
 
+    const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const menuClose = () => {
+        setAnchorEl(null);
+    };
     function openImage() {
         Swal.fire({
             title: props.itemName,
@@ -60,35 +69,38 @@ export default function GTMessage(props: GTMessageProps) {
                     פורסם בתאריך {props.creationDate}:
                 </div>
                 <div className={styles.buttonsContainer}>
-                    {props.CurrentUser && props.CurrentUser.Title === props.creatorName &&//hide the delete button when the current use watch a post he didn't write
-                        < Tooltip title="הסר מוצר" arrow>
-                            <IconButton aria-label="הסר מוצר"
-                                onClick={openDeleteConfirmationModal}>
-                                <DeleteIcon />
-                            </IconButton>
-                        </Tooltip>
-                    }
+                    <IconButton onClick={handleMenuClick}>
+                        <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={menuClose}
+                    >
+                        {props.CurrentUser && props.CurrentUser.Title === props.creatorName &&
+                            <MenuItem onClick={() => { menuClose(); openDeleteConfirmationModal(); }}>
+                                <DeleteIcon sx={{ marginRight: 1 }} />
+                                הסר מוצר
+                            </MenuItem>
+                        }
 
-                    < Tooltip title={props.phoneNumber} arrow>
-                        <IconButton aria-label={props.phoneNumber}>
-                            <PhoneIcon />
-                        </IconButton>
-                    </Tooltip>
+                        <MenuItem onClick={menuClose} disabled>
+                            <PhoneIcon sx={{ marginRight: 1 }} />
+                            {props.phoneNumber}
+                        </MenuItem>
 
-                    < Tooltip title="פנייה במייל" arrow>
-                        <IconButton aria-label="פנייה במייל" href={`mailto:${props.email}`}>
-                            <EmailIcon />
-                        </IconButton>
-                    </Tooltip>
+                        <MenuItem component="a" href={`mailto:${props.email}`} onClick={menuClose}>
+                            <EmailIcon sx={{ marginRight: 1 }} />
+                            פנייה במייל
+                        </MenuItem>
 
-                    {props.Image && props.Image !== "" &&
-                        < Tooltip title="הצגת תמונה" arrow>
-                            <IconButton aria-label="הצגת תמונה"
-                                onClick={openImage}>
-                                <ImageIcon />
-                            </IconButton>
-                        </Tooltip>
-                    }
+                        {props.Image && props.Image !== "" &&
+                            <MenuItem onClick={() => { menuClose(); openImage(); }}>
+                                <ImageIcon sx={{ marginRight: 1 }} />
+                                הצגת תמונה
+                            </MenuItem>
+                        }
+                    </Menu>
                 </div>
             </div>
             <div className={styles.messageBody}>

@@ -7,8 +7,8 @@ import { Web } from "@pnp/sp/webs";
 import { spfi, SPFI } from "@pnp/sp";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
-import { Item } from "@pnp/sp/items";
-import { openErrorModal } from "./SwalUtils";
+import { IItemAddResult, Item } from "@pnp/sp/items";
+import { openErrorModal, openSuccessModal } from "./SwalUtils";
 
 const requiredFields: (keyof GTMarketFormErrors)[] = [
     "itemName",
@@ -84,13 +84,10 @@ export async function submitForm(
     formData: GTMarketFormType,
     GTMarketListId: string,
     GTMarketImagesListId: string,
-    updateErrors: (errors: GTMarketFormErrors) => void
+    updateErrors: (errors: GTMarketFormErrors) => void,
+    closeForm: () => void
 ) {
-    console.log("form data: ", formData);
-
     const errors = validateFields(formData)
-    console.log("erorrs: ", errors);
-
     if (!formData || !isValid(errors)) {
         updateErrors(errors);
         openErrorModal("הטופס אינו תקין");
@@ -104,16 +101,27 @@ export async function submitForm(
         phoneNumber: formData.phoneNumber,
         email: formData.email,
         creatorName: formData.creatorName,
+        itemImage: ""
     };
+    let item: IItemAddResult;
+    try {
+        item = await sp.web.lists.getById(GTMarketListId).items.add(updateObject);
+    }
+    catch (err) {
+        console.error("An error occurred during adding file: ", err);
+        openErrorModal("העלאת הקובץ נכשלה")
+        return 403;
+    }
 
     if (formData.imageFile !== null) {
         if (!checkFileType()) {
             openErrorModal("סוג הקובץ אינו תמונה")
             return 401; // illegal file type
         }
-
         try {
-            const fileBuffer = await formData.imageFile.arrayBuffer();
+            await updatePhoto(item.data.Id, formData.imageFile, "GTMarket", "itemImage", sp);
+            openSuccessModal("הטופס נשלח בהצלחה", closeForm)
+            return 200;
         }
         catch (err) {
             console.error("Error uploading image:", err);
@@ -121,14 +129,25 @@ export async function submitForm(
             return 402;
         }
     }
+    openSuccessModal("הטופס נשלח בהצלחה", closeForm)
+    return 200;
+}
 
-    try {
-        await sp.web.lists.getById(GTMarketListId).items.add(updateObject);
-        return 200;
-    }
-    catch (err) {
-        console.error("An error occurred during adding file: ", err);
-        openErrorModal("העלאת הקובץ נכשלה")
-        return 403;
-    }
+
+async function updatePhoto(itemId: number, file: File, listTitle = "GTMarket", columnInternalName = "itemImage", sp: SPFI) {
+    // 1. Upload to Site Assets (or another library)
+    const assetsLib = await sp.web.lists.ensureSiteAssetsLibrary();
+    const upload = await assetsLib.rootFolder.files.addUsingPath(file.name, file);
+    // 2. Build JSON payload PnP/SharePoint expects
+    const imgJson = {
+        serverRelativeUrl: upload.data.ServerRelativeUrl,
+        fileName: upload.data.Name,
+        // Optional: add serverUrl if needed
+        // serverUrl: "https://<tenant>.sharepoint.com" 
+    };
+
+    // 3. Update the list item
+    await sp.web.lists.getByTitle(listTitle).items.getById(itemId).update({
+        [columnInternalName]: JSON.stringify(imgJson)
+    });
 }

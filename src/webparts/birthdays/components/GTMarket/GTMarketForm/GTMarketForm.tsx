@@ -152,7 +152,7 @@ export default function GTMarketForm(props: GTMarketFormProps) {
                         variant="contained"
                         style={{ backgroundColor: "#84C792" }}
                         type="submit"
-                        onClick={() => submitForm(props.context, formData, props.GTMarketListId, props.GTMarketImagesListId, setErrors)}
+                        onClick={() => submitForm(props.context, formData, props.GTMarketListId, props.GTMarketImagesListId, setErrors, props.closeForm)}
                     >
                         שמירה
                     </Button>
