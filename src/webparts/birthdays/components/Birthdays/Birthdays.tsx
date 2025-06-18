@@ -102,7 +102,10 @@ export default class Birthdays extends React.Component<
       i.isOpen = false;
 
       try {
-        let profPic = `https://projects1.sharepoint.com/sites/portal/_layouts/15/userphoto.aspx?size=L&username=${i?.EmployeeEmail}`;
+        let profPic = ""
+        if (i.EmployeeEmail) {
+          profPic = `https://jtmt.sharepoint.com/sites/portal/_layouts/15/userphoto.aspx?size=L&username=${i?.EmployeeEmail}`;
+        }
         // i.EmployeePhoto = pictureUrlEntry ? pictureUrlEntry.Value : null;
         i.EmployeePhoto = profPic;
       } catch (error) {
@@ -340,7 +343,7 @@ export default class Birthdays extends React.Component<
                           >
                             <img
                               // src={this.onPictureConverterUrl(People?.EmployeePhoto, People?.Id)}
-                              src={People?.EmployeePhoto || DefaultProfilePic}
+                              src={People?.EmployeePhoto !== '' ? People?.EmployeePhoto : DefaultProfilePic}
                               alt=""
                               className={styles.peopleImg}
                             />
@@ -375,12 +378,10 @@ export default class Birthdays extends React.Component<
                                     <span className={styles.modalHeader}>
                                       מזל טוב {People.Title}!
                                     </span>
-
                                     <img
                                       // src={this.onPictureConverterUrl(People.EmployeePhoto, People.Id)}
                                       src={
-                                        People?.EmployeePhoto ||
-                                        DefaultProfilePic
+                                        People?.EmployeePhoto !== '' ? People?.EmployeePhoto : DefaultProfilePic
                                       }
                                       alt=""
                                       className={styles.peopleImgInModal}
