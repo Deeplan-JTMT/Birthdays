@@ -51,7 +51,7 @@ export default function GTMarketForm(props: GTMarketFormProps) {
             if (!prev) return prev
             return {
                 ...prev,
-                [key]: checkErrors(value) || false
+                [key]: checkErrors(value, key) || false
             }
         })
         setFormData(prev => {
@@ -119,6 +119,7 @@ export default function GTMarketForm(props: GTMarketFormProps) {
                         defaultValue={props.itemName || ""}
                         name='itemName'
                         onChange={(event) => handleChange('itemName', event.target.value)}
+                        inputProps={{ maxLength: 255 }} // <-- Limit to 255 characters
                     />
                     <TextField
                         error={errors?.itemDescription}
@@ -137,7 +138,7 @@ export default function GTMarketForm(props: GTMarketFormProps) {
                         name='phoneNumber'
                         onChange={(event) => handleChange('phoneNumber', event.target.value)}
                     />
-                    <input type='file' aria-label='צרף תמונה' onChange={(e) => changeImage(e.target.files)} accept='image/*' id='imageUploader' />
+                    <input className={styles.imageUploader} type='file' aria-label='צרף תמונה' onChange={(e) => changeImage(e.target.files)} accept='image/*' id='imageUploader' />
 
                 </div>
                 <div className={styles.buttonsContainer}>
@@ -152,7 +153,7 @@ export default function GTMarketForm(props: GTMarketFormProps) {
                         variant="contained"
                         style={{ backgroundColor: "#84C792" }}
                         type="submit"
-                        onClick={() => submitForm(props.context, formData, props.GTMarketListId, props.GTMarketImagesListId, setErrors, props.closeForm)}
+                        onClick={() => submitForm(props.context, formData, props.GTMarketListId, props.GTMarketImagesListId, setErrors, props.closeForm, props.reRender)}
                     >
                         שמירה
                     </Button>

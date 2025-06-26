@@ -31,22 +31,47 @@ export function isValid(errors: GTMarketFormErrors) {
 }
 
 
-export function checkErrors(value: string | null | moment.Moment | ISiteUserInfo | number) {
-    if (!value) {
-        return true;
+export function checkErrors(
+    value: string | null | moment.Moment | ISiteUserInfo | number,
+    key: string
+  ): boolean {
+    if (value === null || value === undefined) {
+      return true;
     }
-    let isError: boolean;
-    if (typeof value === 'string') {
-        isError = value.trim() === '';
-    } else if (value === null) {
-        isError = true;
-    } else if (moment.isMoment(value)) {
-        isError = !value.isValid();
-    } else {
-        isError = false;
+  
+    switch (key) {
+      case "creatorName":
+      case "itemName":
+        return (
+          typeof value !== "string" ||
+          value.trim() === "" ||
+          value.length > 255
+        );
+  
+      case "itemDescription":
+        return typeof value !== "string" || value.trim() === "";
+  
+      case "email":
+        return (
+          typeof value !== "string" ||
+          !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(value)
+        );
+  
+      case "phoneNumber":
+        // Accepts with or without hyphen (e.g., 0542520195 or 054-2520195 or 09-7926365 or 097926365)
+        return (
+          typeof value !== "string" ||
+          !/^0\d{1,2}-?\d{6,7}$/.test(value)
+        );
+  
+      case "creationDate":
+        return !moment.isMoment(value) || !value.isValid();
+  
+      default:
+        return false;
     }
-    return isError;
-}
+  }
+  
 
 function checkFileType() {
     const input = document.getElementById('imageUploader') as HTMLInputElement;
@@ -72,7 +97,7 @@ function validateFields(data: GTMarketFormType) {
         itemName: false,
         phoneNumber: false
     }
-    requiredFields.forEach(field => formErrors[field] = checkErrors(data[field]))
+    requiredFields.forEach(field => formErrors[field] = checkErrors(data[field], field))
     return formErrors;
 }
 
@@ -85,12 +110,14 @@ export async function submitForm(
     GTMarketListId: string,
     GTMarketImagesListId: string,
     updateErrors: (errors: GTMarketFormErrors) => void,
-    closeForm: () => void
+    closeForm: () => void,
+    reRender: () => void
 ) {
     const errors = validateFields(formData)
     if (!formData || !isValid(errors)) {
         updateErrors(errors);
         openErrorModal("הטופס אינו תקין");
+        return;
     }
 
     const sp = getSP(context);
@@ -130,6 +157,7 @@ export async function submitForm(
         }
     }
     openSuccessModal("הטופס נשלח בהצלחה", closeForm)
+    reRender();
     return 200;
 }
 

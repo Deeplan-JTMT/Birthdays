@@ -18,4 +18,5 @@ export interface GTMarketFormProps {
     context: WebPartContext;
     GTMarketListId: string;
     GTMarketImagesListId: string;
+    reRender: () =>void;
 }

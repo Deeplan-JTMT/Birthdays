@@ -46,13 +46,14 @@ export default function GTMarket(props: GTMarketProps) {
     const [showForm, setShowForm] = React.useState<boolean>(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [page, setPage] = React.useState<number>(0);
+    const [reRender, setReRender] = React.useState<number>(0);
     const open = Boolean(anchorEl);
     const timeoutRef = React.useRef<number | undefined>(undefined);
 
 
     React.useEffect(() => {
         init();
-    }, [])
+    }, [reRender])
 
     // האפקט שמנהל את הטיימר
     React.useEffect(() => {
@@ -80,7 +81,7 @@ export default function GTMarket(props: GTMarketProps) {
     async function init() {
         const data = await getData();
         const messages = await getGTMessages(data);
-        setGtMessages(prev => messages);
+        setGtMessages(prev => messages.reverse());
     }
 
     function changePage(pageNumber: number) {
@@ -159,7 +160,7 @@ export default function GTMarket(props: GTMarketProps) {
             <div className={styles.marketContainer} >
                 {showForm && currentUser && <GTMarketForm CurrentUser={currentUser} creationDate={moment()} creatorName="" email="" image="" imageId={0} itemDescription=""
                     itemId={0} itemName="" open={showForm} phoneNumber="" key="GTMarketForm" closeForm={closeAdditionForm}
-                    context={props.context} GTMarketListId={props.gtMarketListId} GTMarketImagesListId={props.GTMarketImageListId} />}
+                    context={props.context} GTMarketListId={props.gtMarketListId} GTMarketImagesListId={props.GTMarketImageListId} reRender={()=>setReRender(prev=>prev+1)} />}
                 <div className={styles.titleContainer}>
                     <div className={styles.title}>
                         שוק תן וקח
