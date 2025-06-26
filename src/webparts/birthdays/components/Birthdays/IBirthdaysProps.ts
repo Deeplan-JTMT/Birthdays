@@ -19,4 +19,5 @@ export interface IBirthdaysProps {
 
   GTMarketListID: string;
   GTMarketImageListId: string;
+  switchPostTime: number;
 }

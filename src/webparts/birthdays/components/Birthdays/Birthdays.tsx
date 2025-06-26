@@ -293,7 +293,7 @@ export default class Birthdays extends React.Component<
           className={`${styles.BirthdaysBackGroundImage}`}
         >
           <div className={styles.BirthdaysGTMarketContainer}>
-            <GTMarket context={this.props.context} sp={this.props.sp} gtMarketListId={this.props.GTMarketListID} GTMarketImageListId={this.props.GTMarketImageListId} />
+            <GTMarket context={this.props.context} sp={this.props.sp} gtMarketListId={this.props.GTMarketListID} GTMarketImageListId={this.props.GTMarketImageListId} switchPostTime={this.props.switchPostTime} />
           </div>
 
           {/* <div>

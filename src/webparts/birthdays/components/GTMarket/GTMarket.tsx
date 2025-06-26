@@ -20,12 +20,15 @@ import { CacheProvider } from '@emotion/react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 interface GTMarketProps {
     sp: SPFI;
     context: WebPartContext;
     gtMarketListId: string;
     GTMarketImageListId: string;
+    switchPostTime: number;
 }
 
 const cacheRtl = createCache({
@@ -40,14 +43,31 @@ export default function GTMarket(props: GTMarketProps) {
     const flipFilter = () => setFilterList(prev => !prev);
     const [gtMessages, setGtMessages] = React.useState<GTMessageType[]>([]);
     const [currentUser, serCurrentUser] = React.useState<ISiteUserInfo>();
-    const [overFlow, setOverFlow] = React.useState<boolean>(true);
     const [showForm, setShowForm] = React.useState<boolean>(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [page, setPage] = React.useState<number>(0);
     const open = Boolean(anchorEl);
+    const timeoutRef = React.useRef<number | undefined>(undefined);
+
 
     React.useEffect(() => {
         init();
     }, [])
+
+    // האפקט שמנהל את הטיימר
+    React.useEffect(() => {
+        if (gtMessages.length === 0) return;
+        // בכל שינוי עמוד – מנקים טיימר ישן, מתחילים חדש
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+        timeoutRef.current = setTimeout(() => {
+            console.log("page: ", page);
+            setPage(prev => (prev + 1) % gtMessages.length);
+        }, props.switchPostTime * 1000);//switchPostTime is in seconds
+
+        // מנקים טיימר ביציאה/שינוי עמוד
+        return () => clearTimeout(timeoutRef.current);
+    }, [page, gtMessages.length]);
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -61,6 +81,12 @@ export default function GTMarket(props: GTMarketProps) {
         const data = await getData();
         const messages = await getGTMessages(data);
         setGtMessages(prev => messages);
+    }
+
+    function changePage(pageNumber: number) {
+        console.log("pageNumber: ", pageNumber);
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        setPage(pageNumber);//two posts per page with a chance to have a page with one post if there is an odd number of posts
     }
 
     async function getData() {
@@ -124,23 +150,10 @@ export default function GTMarket(props: GTMarketProps) {
         }
     }
 
-    function updateOverFlow() {
-        const element = document.querySelector('#GTMarketBody');  // returns the element or null
-        if (overFlow) {
-            element?.classList.remove(styles.overFlowAuto);
-            element?.classList.add(styles.overFlowHidden)
-        }
-        else {
-            element?.classList.add(styles.overFlowAuto);
-            element?.classList.remove(styles.overFlowHidden)
-        }
-        setOverFlow(!overFlow);
-    }
-
     function showAdditionForm() { setShowForm(true) }
 
     function closeAdditionForm() { setShowForm(false) }
-
+    const pages = Math.ceil(gtMessages.length / 2);
     return (
         <CacheProvider value={cacheRtl}>
             <div className={styles.marketContainer} >
@@ -179,21 +192,40 @@ export default function GTMarket(props: GTMarketProps) {
                         </Menu>
                     </div>
                 </div>
-                <div className={`${styles.marketBody} ${styles.overFlowAuto}`} id='GTMarketBody'>
+                <div className={`${styles.marketBody}`} id='GTMarketBody'>
                     {(filterList
                         ? gtMessages.filter(m => m.creatorName === currentUser?.Title)   // my items
                         : gtMessages                                                    // all items
-                    ).map((message, idx) => (
+                    ).slice(page, page + 1).map((message, idx) => (
                         <GTMessage
                             key={`gtMessage${idx}`}
                             removeItem={message.Image !== "" ?
                                 () => removeItem(message.itemId)
                                 : () => removeItem(message.itemId)
                             }
-                            updateOverFlow={updateOverFlow}
                             {...message}
                         />
                     ))}
+                </div>
+                <div className={styles.paginationContainer}>
+                    <Tooltip title="הבא" arrow>
+                        <span>
+                            <IconButton
+                                onClick={() => changePage((page + 1) % gtMessages.length )}
+                            >
+                                <ArrowRightIcon />
+                            </IconButton>
+                        </span>
+                    </Tooltip>
+                    <Tooltip title="הקודם" arrow>
+                        <span>
+                            <IconButton
+                                onClick={() => changePage((page - 1 + gtMessages.length) % gtMessages.length)}
+                            >
+                                <ArrowLeftIcon />
+                            </IconButton>
+                        </span>
+                    </Tooltip>
                 </div>
             </div>
         </CacheProvider>

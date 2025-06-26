@@ -23,7 +23,6 @@ interface GTMessageProps {
     email: string;
     Image: string | null;
     removeItem: (itemId: number) => void;
-    updateOverFlow: () => void;
 }
 
 export default function GTMessage(props: GTMessageProps) {
@@ -63,10 +62,10 @@ export default function GTMessage(props: GTMessageProps) {
     }
 
     return (
-        <div className={styles.messageContainer} onClick={props.updateOverFlow}>
+        <div className={styles.messageContainer}>
             <div className={styles.upperRow}>
-                <div className={styles.creationDate}>
-                    פורסם בתאריך {props.creationDate}:
+                <div className={styles.itemName}>
+                    למסירה {props.itemName}:
                 </div>
                 <div className={styles.buttonsContainer}>
                     <IconButton onClick={handleMenuClick}>
@@ -104,12 +103,16 @@ export default function GTMessage(props: GTMessageProps) {
                 </div>
             </div>
             <div className={styles.messageBody}>
-                <div className={styles.messageHeader}>
-                    {`${props.itemName} פורסם על ידי ${props.creatorName}`}
-                </div>
-                <div className={styles.messageContent}>
+            <div className={styles.messageContent}>
                     {props.itemDescription}
                 </div>
+                <div className={styles.messageHeader}>
+                    {`פורסם על ידי ${props.creatorName}`}
+                </div>
+                <div className={styles.messageHeader}>
+                    {`פורסם בתאריך ${props.creationDate}`}
+                </div>
+
             </div>
         </div >
     );

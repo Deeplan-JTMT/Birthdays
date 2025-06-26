@@ -36,7 +36,8 @@
         "SpotlightInterval": 10000,
         "pageItemsNumber": 4,
         "GTMarketListID": "ac6600de-3d19-4765-9202-3d1b73bdd49c",
-        "GTMarketImageListId": "0567deab-da78-4a41-ac70-17d5492d11aa"
+        "GTMarketImageListId": "0567deab-da78-4a41-ac70-17d5492d11aa",
+        "switchPostTime": 10
       }
     }
   ]

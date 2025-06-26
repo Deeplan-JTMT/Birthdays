@@ -12,7 +12,7 @@
         0 2px 4px rgba(#000, .08),
         0 8px 16px rgba(#000, .06);
     transition: box-shadow .2s ease;
-    background-color: #1D88DD;
+    background-color: #FFFFFF;
 }
 
 .upperRow {
@@ -21,10 +21,10 @@
     gap: 1rem;
     justify-content: space-between;
 
-    .creationDate {
+    .itemName {
         color: #000;
         font-size: 16px;
-        font-weight: 500;
+        font-weight: 600;
         text-align: right;
         flex: 1;
     }
@@ -46,12 +46,12 @@
     font-family: "Rubik", sans-serif !important;
 
     .messageHeader {
-        font-weight: 600;
+        color: #8B959B
     }
 
     .messageContent {
         font-size: 14px;
-        padding-top: 0.5em;
+        padding-bottom: 1em;
     }
 }
 

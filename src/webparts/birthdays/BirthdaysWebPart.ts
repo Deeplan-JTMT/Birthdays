@@ -34,6 +34,7 @@ export interface IBirthdaysWebPartProps {
 
   GTMarketListID: string;
   GTMarketImageListId: string;
+  switchPostTime: number;
 }
 
 export default class BirthdaysWebPart extends BaseClientSideWebPart<IBirthdaysWebPartProps> {
@@ -43,7 +44,7 @@ export default class BirthdaysWebPart extends BaseClientSideWebPart<IBirthdaysWe
   private _environmentMessage: string = "";
 
   public render(): void {
-    const element: React.ReactElement<IBirthdaysProps> = React.createElement(
+    const element: React.ReactElement = React.createElement(
       Birthdays,
       {
         description: this.properties.description,
@@ -63,6 +64,7 @@ export default class BirthdaysWebPart extends BaseClientSideWebPart<IBirthdaysWe
 
         GTMarketListID: this.properties.GTMarketListID,
         GTMarketImageListId: this.properties.GTMarketImageListId,
+        switchPostTime: this.properties.switchPostTime,
       }
     );
 
@@ -239,6 +241,15 @@ export default class BirthdaysWebPart extends BaseClientSideWebPart<IBirthdaysWe
                   deferredValidationTime: 0,
                   key: "GTMarketImageListId",
                 }),
+                PropertyFieldNumber("switchPostTime", {
+                  key: "numberValue",
+                  label: "Number value only",
+                  description: "Number field description",
+                  value: this.properties.switchPostTime,
+                  maxValue: 10,
+                  minValue: 1,
+                  disabled: false
+                })
               ],
             },
           ],
