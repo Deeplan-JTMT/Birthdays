@@ -68,10 +68,10 @@ export default function GTMarket(props: GTMarketProps) {
             const pageNumber = getPageNumber()
             console.log("pageNumber: ", pageNumber);
             console.log("page: ", page);
-            setPage(prev => (prev + 1) % pageNumber  );
+            setPage(prev => (prev + 1) % pageNumber);
         }, props.switchPostTime * 1000);//switchPostTime is in seconds
 
-        // מנקים טיימר ביציאה/שינוי עמוד
+        // מנקים טיימר ביציאה/שינוי עמוד 
         return () => clearTimeout(timeoutRef.current);
     }, [page, gtMessages.length]);
 
@@ -171,7 +171,7 @@ export default function GTMarket(props: GTMarketProps) {
             <div className={styles.marketContainer} >
                 {showForm && currentUser && <GTMarketForm CurrentUser={currentUser} creationDate={moment()} creatorName="" email="" image="" imageId={0} itemDescription=""
                     itemId={0} itemName="" open={showForm} phoneNumber="" key="GTMarketForm" closeForm={closeAdditionForm}
-                    context={props.context} GTMarketListId={props.gtMarketListId} GTMarketImagesListId={props.GTMarketImageListId} reRender={()=>setReRender(prev=>prev+1)} />}
+                    context={props.context} GTMarketListId={props.gtMarketListId} GTMarketImagesListId={props.GTMarketImageListId} reRender={() => setReRender(prev => prev + 1)} />}
                 <div className={styles.titleContainer}>
                     <div className={styles.title}>
                         שוק תן וקח
@@ -223,7 +223,7 @@ export default function GTMarket(props: GTMarketProps) {
                     <Tooltip title="הבא" arrow>
                         <span>
                             <IconButton
-                                onClick={() => changePage((page + 1) % getPageNumber() )}
+                                onClick={() => changePage((page + 1) % getPageNumber())}
                             >
                                 <ArrowRightIcon />
                             </IconButton>
