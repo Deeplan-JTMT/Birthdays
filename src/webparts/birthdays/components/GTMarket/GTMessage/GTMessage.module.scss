@@ -1,0 +1,68 @@
+.messageContainer {
+    width: 85%;
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+    padding: 0.5em 1em 1em 0.5em;
+    margin: 1em 0.5em 0 0.5em;
+    direction: rtl;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow:
+        0 2px 4px rgba(#000, .08),
+        0 8px 16px rgba(#000, .06);
+    transition: box-shadow .2s ease;
+    background-color: #FFFFFF;
+}
+
+.upperRow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+
+    .itemName {
+        color: #000;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: right;
+        flex: 1;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .buttonsContainer {
+        margin-left: auto;
+        display: flex;
+        margin-left: auto;
+        flex-shrink: 0;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+}
+
+.messageBody {
+    display: flex;
+    text-align: right;
+    flex-direction: column;
+    font-family: "Rubik", sans-serif !important;
+
+    .messageHeader {
+        color: #8B959B
+    }
+
+    .messageContent {
+        font-size: 14px;
+        padding-bottom: 1em;
+        white-space: normal;
+        word-break: break-word;
+    }
+}
+
+.productName {
+    cursor: pointer;
+}
+
+.productName:hover {
+    text-decoration: underline;
+}

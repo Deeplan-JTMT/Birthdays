@@ -1,0 +1,52 @@
+.modalBackGround {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 500 !important;
+}
+
+.modalScreen {
+    width: fit-content;
+    min-width: 45%;
+    height: fit-content;
+    background: #fff;
+    border-radius: 15px;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    font-family: "Rubik", sans-serif !important;
+    font-size: 18px;
+    font-weight: 600;
+    padding-top: 1em;
+}
+
+.formContainer {
+    display: flex;
+    justify-content: flex-end;
+    direction: rtl;
+    overflow-y: auto;
+    flex-direction: column;
+    gap: 1em;
+    padding: 1em;
+}
+
+.buttonsContainer {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    flex-direction: row;
+    padding-bottom: 1em;
+}
+
+.swal {
+    z-index: 999999 !important;
+}
+
+.imageUploader {
+    width: fit-content;
+  }

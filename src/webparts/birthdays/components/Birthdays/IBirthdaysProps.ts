@@ -16,4 +16,8 @@ export interface IBirthdaysProps {
 
   SpotlightId: string;
   SpotlightInterval: number;
+
+  GTMarketListID: string;
+  GTMarketImageListId: string;
+  switchPostTime: number;
 }

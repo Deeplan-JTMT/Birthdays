@@ -15,6 +15,7 @@ import { PaginationItem } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import * as moment from "moment";
+import GTMarket from "../GTMarket/GTMarket";
 const DefaultProfilePic = require("../../assets/defaultProfilePic.jpg");
 
 export interface IBirthdaysState {
@@ -52,6 +53,8 @@ export default class Birthdays extends React.Component<
   componentDidMount(): void {
     this.getBirthdayList();
     document.addEventListener("click", this.handleDocumentClick);
+    console.log("list: ", this.props.GTMarketListID);
+
   }
   componentWillUnmount(): void {
     // Remove click listener
@@ -102,11 +105,15 @@ export default class Birthdays extends React.Component<
       i.isOpen = false;
 
       try {
-        let profPic = ""
-        if (i.EmployeeEmail) {
+        let profPic = '';
+        if (!i.EmployeePhoto) {
+          // If EmployeePhoto is not set, use the default profile picture
+          profPic = DefaultProfilePic;
+        } else {
+          // If EmployeePhoto is a JSON string, parse it and get the fileName
           profPic = `https://jtmt.sharepoint.com/sites/portal/_layouts/15/userphoto.aspx?size=L&username=${i?.EmployeeEmail}`;
         }
-        // i.EmployeePhoto = pictureUrlEntry ? pictureUrlEntry.Value : null;
+
         i.EmployeePhoto = profPic;
       } catch (error) {
         console.error("Error fetching employee photo", error);
@@ -285,20 +292,19 @@ export default class Birthdays extends React.Component<
       indexOfLastItem
     );
 
+
     return (
       <section className={` ${styles.Birthdays}`}>
         <div
           style={{ backgroundImage: `url(${this.props.BackgroundImage})` }}
           className={`${styles.BirthdaysBackGroundImage}`}
         >
-          {/* <div>
-            <MoviesAndSeries
-              sp={this.props.sp}
-              MoviesAndSeriesId={this.props.MoviesAndSeriesId}
-              context={this.props.context}
-            />
-          </div> */}
+          <div className={styles.BirthdaysGTMarketContainer}>
+            <GTMarket context={this.props.context} sp={this.props.sp} gtMarketListId={this.props.GTMarketListID} GTMarketImageListId={this.props.GTMarketImageListId} switchPostTime={this.props.switchPostTime} />
+          </div>
+
           <div className={`${styles.BirthdaysLeftContainer}`}>
+
             <div className={`${styles.BirthdaysContainer}`}>
               <div className={`${styles.BirthdaysTitleCon}`}>
                 <div id="bdayTitle" className={`${styles.title}`}>

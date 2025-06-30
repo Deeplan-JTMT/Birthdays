@@ -31,6 +31,10 @@ export interface IBirthdaysWebPartProps {
   SpotlightId: string;
   MoviesAndSeriesId: string;
   SpotlightInterval: number;
+
+  GTMarketListID: string;
+  GTMarketImageListId: string;
+  switchPostTime: number;
 }
 
 export default class BirthdaysWebPart extends BaseClientSideWebPart<IBirthdaysWebPartProps> {
@@ -40,7 +44,7 @@ export default class BirthdaysWebPart extends BaseClientSideWebPart<IBirthdaysWe
   private _environmentMessage: string = "";
 
   public render(): void {
-    const element: React.ReactElement<IBirthdaysProps> = React.createElement(
+    const element: React.ReactElement = React.createElement(
       Birthdays,
       {
         description: this.properties.description,
@@ -57,6 +61,10 @@ export default class BirthdaysWebPart extends BaseClientSideWebPart<IBirthdaysWe
 
         SpotlightId: this.properties.SpotlightId,
         SpotlightInterval: this.properties.SpotlightInterval,
+
+        GTMarketListID: this.properties.GTMarketListID,
+        GTMarketImageListId: this.properties.GTMarketImageListId,
+        switchPostTime: this.properties.switchPostTime,
       }
     );
 
@@ -209,6 +217,39 @@ export default class BirthdaysWebPart extends BaseClientSideWebPart<IBirthdaysWe
                   value: this.properties.SpotlightInterval,
                   disabled: false,
                 }),
+                PropertyFieldListPicker("GTMarketListID", {
+                  label: "Select GT Market list",
+                  selectedList: this.properties.GTMarketListID,
+                  includeHidden: false,
+                  orderBy: PropertyFieldListPickerOrderBy.Title,
+                  disabled: false,
+                  onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
+                  properties: this.properties,
+                  context: this.context as any,
+                  deferredValidationTime: 0,
+                  key: "GTMarketListID",
+                }),
+                PropertyFieldListPicker("GTMarketImageListId", {
+                  label: "Select GT Market image list",
+                  selectedList: this.properties.GTMarketListID,
+                  includeHidden: false,
+                  orderBy: PropertyFieldListPickerOrderBy.Title,
+                  disabled: false,
+                  onPropertyChange: this.onPropertyPaneFieldChanged.bind(this),
+                  properties: this.properties,
+                  context: this.context as any,
+                  deferredValidationTime: 0,
+                  key: "GTMarketImageListId",
+                }),
+                PropertyFieldNumber("switchPostTime", {
+                  key: "numberValue",
+                  label: "Number value only",
+                  description: "Number field description",
+                  value: this.properties.switchPostTime,
+                  maxValue: 10,
+                  minValue: 1,
+                  disabled: false
+                })
               ],
             },
           ],
