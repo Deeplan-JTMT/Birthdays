@@ -40,7 +40,10 @@ const DATE_FORMAT = 'DD/MM/YYYY'
 
 export default function GTMarket(props: GTMarketProps) {
     const [filterList, setFilterList] = React.useState<boolean>(false)
-    const flipFilter = () => setFilterList(prev => !prev);
+    const flipFilter = () => {
+        setPage(0);
+        setFilterList(prev => !prev)
+    };
     const [gtMessages, setGtMessages] = React.useState<GTMessageType[]>([]);
     const [currentUser, serCurrentUser] = React.useState<ISiteUserInfo>();
     const [showForm, setShowForm] = React.useState<boolean>(false);
@@ -62,13 +65,21 @@ export default function GTMarket(props: GTMarketProps) {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
         timeoutRef.current = setTimeout(() => {
+            const pageNumber = getPageNumber()
+            console.log("pageNumber: ", pageNumber);
             console.log("page: ", page);
-            setPage(prev => (prev + 1) % gtMessages.length);
+            setPage(prev => (prev + 1) % pageNumber  );
         }, props.switchPostTime * 1000);//switchPostTime is in seconds
 
         // מנקים טיימר ביציאה/שינוי עמוד
         return () => clearTimeout(timeoutRef.current);
     }, [page, gtMessages.length]);
+
+    function getPageNumber() {
+        return filterList
+            ? gtMessages.filter(m => m.creatorName === currentUser?.Title).length   // my items
+            : gtMessages.length
+    }
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -212,7 +223,7 @@ export default function GTMarket(props: GTMarketProps) {
                     <Tooltip title="הבא" arrow>
                         <span>
                             <IconButton
-                                onClick={() => changePage((page + 1) % gtMessages.length )}
+                                onClick={() => changePage((page + 1) % getPageNumber() )}
                             >
                                 <ArrowRightIcon />
                             </IconButton>
@@ -221,7 +232,7 @@ export default function GTMarket(props: GTMarketProps) {
                     <Tooltip title="הקודם" arrow>
                         <span>
                             <IconButton
-                                onClick={() => changePage((page - 1 + gtMessages.length) % gtMessages.length)}
+                                onClick={() => changePage((page - 1 + getPageNumber()) % getPageNumber())}
                             >
                                 <ArrowLeftIcon />
                             </IconButton>
