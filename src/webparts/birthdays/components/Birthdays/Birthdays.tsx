@@ -113,6 +113,7 @@ export default class Birthdays extends React.Component<
           // If EmployeePhoto is a JSON string, parse it and get the fileName
           profPic = `https://jtmt.sharepoint.com/sites/portal/_layouts/15/userphoto.aspx?size=L&username=${i?.EmployeeEmail}`;
         }
+
         i.EmployeePhoto = profPic;
       } catch (error) {
         console.error("Error fetching employee photo", error);
@@ -348,7 +349,7 @@ export default class Birthdays extends React.Component<
                           >
                             <img
                               // src={this.onPictureConverterUrl(People?.EmployeePhoto, People?.Id)}
-                              src={People?.EmployeePhoto || DefaultProfilePic}
+                              src={People?.EmployeePhoto !== '' ? People?.EmployeePhoto : DefaultProfilePic}
                               alt=""
                               className={styles.peopleImg}
                             />
@@ -383,12 +384,10 @@ export default class Birthdays extends React.Component<
                                     <span className={styles.modalHeader}>
                                       מזל טוב {People.Title}!
                                     </span>
-
                                     <img
                                       // src={this.onPictureConverterUrl(People.EmployeePhoto, People.Id)}
                                       src={
-                                        People?.EmployeePhoto ||
-                                        DefaultProfilePic
+                                        People?.EmployeePhoto !== '' ? People?.EmployeePhoto : DefaultProfilePic
                                       }
                                       alt=""
                                       className={styles.peopleImgInModal}
