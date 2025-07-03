@@ -50,7 +50,7 @@
 // }
 
 .Birthdays {
-  width: 91%;
+  width: 96%;
   margin: auto;
 }
 
@@ -171,7 +171,7 @@
         margin-top: 15px;
       }
 
-      >span {
+      > span {
         //
         // margin-top: 2%;
         color: #2d2d2d;
@@ -191,7 +191,7 @@
         direction: ltr;
       }
 
-      >span:nth-child(3) {
+      > span:nth-child(3) {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -200,7 +200,7 @@
         margin-top: 7%;
       }
 
-      >span:nth-child(5) {
+      > span:nth-child(5) {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -248,7 +248,7 @@
     border: none;
   }
 
-  >img {
+  > img {
     width: 9%;
     margin: 0 7% 0 0;
     cursor: pointer;
@@ -315,7 +315,7 @@ button {
   overflow: hidden;
   margin: 0 4.25px 8.5px 4.25px;
 
-  >span {
+  > span {
     text-transform: uppercase;
     font-style: normal;
     font-weight: 400;
@@ -419,8 +419,8 @@ button {
   font-size: 48px; // Size of the arrow
 }
 
-.arrowLeft:hover> :nth-child(1),
-.arrowRight:hover> :nth-child(1) {
+.arrowLeft:hover > :nth-child(1),
+.arrowRight:hover > :nth-child(1) {
   background-color: rgb(240, 240, 240);
   opacity: 0.5;
   border-radius: 50%;
@@ -466,7 +466,7 @@ button {
     border: none;
   }
 
-  >img {
+  > img {
     width: 9%;
     margin: 0 7% 0 0;
     transform: rotate(180deg) !important;

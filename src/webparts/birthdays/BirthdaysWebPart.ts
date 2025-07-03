@@ -10,7 +10,6 @@ import { IReadonlyTheme } from "@microsoft/sp-component-base";
 
 import * as strings from "BirthdaysWebPartStrings";
 import Birthdays from "./components/Birthdays/Birthdays";
-import { IBirthdaysProps } from "./components/Birthdays/IBirthdaysProps";
 import {
   PropertyFieldListPicker,
   PropertyFieldListPickerOrderBy,
