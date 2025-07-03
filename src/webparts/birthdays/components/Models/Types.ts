@@ -12,6 +12,8 @@ export type GTMessageType = {
     email: string;
     Image: string | null;
     // imageId: number | null;
+    stopTimer: () => void;
+    resumeTimer: () => void;
 }
 
 export type GTMarketFormType = {
