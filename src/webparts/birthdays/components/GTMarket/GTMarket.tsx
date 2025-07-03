@@ -53,23 +53,45 @@ export default function GTMarket(props: GTMarketProps) {
     const open = Boolean(anchorEl);
     const timeoutRef = React.useRef<number | undefined>(undefined);
 
+    const pauseTimer = () => {
+        console.log("stop timer");
+        clearTimeout(timeoutRef.current)
+        console.log("rows before reset: ", gtMessages);
+
+    };
+    const startTimer = () => {
+        console.log("start timer");
+        runTimer()
+        console.log("rows after reset: ", gtMessages);
+
+    }
 
     React.useEffect(() => {
         init();
     }, [reRender])
+
+    function runTimer() {
+        // בטוח ש-timeout קיים? בטל אותו לפני שאתה יוצר חדש
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+        timeoutRef.current = window.setTimeout(() => {
+            const pages = getPageNumber();   // כמה עמודים יש *עכשיו*
+
+            if (pages === 0) {               // ↙︎ רשימה ריקה ➞ אל תתקדם
+                setPage(0);                    // שמור state חוקי
+                return;                        // ואל תעשה מודולו
+            }
+
+            setPage(prev => (prev + 1) % pages);  // תמיד pages ≥ 1
+        }, props.switchPostTime * 1000);
+    }
 
     // האפקט שמנהל את הטיימר
     React.useEffect(() => {
         if (gtMessages.length === 0) return;
         // בכל שינוי עמוד – מנקים טיימר ישן, מתחילים חדש
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
-        timeoutRef.current = setTimeout(() => {
-            const pageNumber = getPageNumber()
-            console.log("pageNumber: ", pageNumber);
-            console.log("page: ", page);
-            setPage(prev => (prev + 1) % pageNumber);
-        }, props.switchPostTime * 1000);//switchPostTime is in seconds
+        runTimer()
 
         // מנקים טיימר ביציאה/שינוי עמוד 
         return () => clearTimeout(timeoutRef.current);
@@ -95,11 +117,13 @@ export default function GTMarket(props: GTMarketProps) {
         setGtMessages(prev => messages.reverse());
     }
 
-    function changePage(pageNumber: number) {
-        console.log("pageNumber: ", pageNumber);
-        if (timeoutRef.current) clearTimeout(timeoutRef.current);
-        setPage(pageNumber);//two posts per page with a chance to have a page with one post if there is an odd number of posts
+    function changePage(newPage: number) {
+        const pages = getPageNumber();
+        if (pages === 0) return;          // אין לאן לעבור
+        clearTimeout(timeoutRef.current);
+        setPage(newPage % pages);
     }
+
 
     async function getData() {
         let data: any[] = [];
@@ -144,6 +168,8 @@ export default function GTMarket(props: GTMarketProps) {
                 email: item.email || "",
                 Image: JSON.parse(item.itemImage)?.serverRelativeUrl || "",
                 // imageId: item.imgId,
+                resumeTimer: startTimer,
+                stopTimer: pauseTimer
             }));
         }
         catch (err) {

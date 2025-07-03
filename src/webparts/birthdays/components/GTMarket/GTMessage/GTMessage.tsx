@@ -23,6 +23,8 @@ interface GTMessageProps {
     email: string;
     Image: string | null;
     removeItem: (itemId: number) => void;
+    stopTimer: () => void;
+    resumeTimer: () => void;
 }
 
 export default function GTMessage(props: GTMessageProps) {
@@ -62,7 +64,9 @@ export default function GTMessage(props: GTMessageProps) {
     }
 
     return (
-        <div className={styles.messageContainer}>
+        <div className={styles.messageContainer}
+            onMouseEnter={props.stopTimer}
+            onMouseLeave={props.resumeTimer}>
             <div className={styles.upperRow}>
                 <div className={styles.itemName}>
                     למסירה {props.itemName}:
@@ -103,7 +107,7 @@ export default function GTMessage(props: GTMessageProps) {
                 </div>
             </div>
             <div className={styles.messageBody}>
-            <div className={styles.messageContent}>
+                <div className={styles.messageContent}>
                     {props.itemDescription}
                 </div>
                 <div className={styles.messageHeader}>
