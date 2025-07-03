@@ -105,8 +105,15 @@ export default class Birthdays extends React.Component<
       i.isOpen = false;
 
       try {
-        let profPic = `https://projects1.sharepoint.com/sites/portal/_layouts/15/userphoto.aspx?size=L&username=${i?.EmployeeEmail}`;
-        // i.EmployeePhoto = pictureUrlEntry ? pictureUrlEntry.Value : null;
+        let profPic = '';
+        if (!i.EmployeePhoto) {
+          // If EmployeePhoto is not set, use the default profile picture
+          profPic = DefaultProfilePic;
+        } else {
+          // If EmployeePhoto is a JSON string, parse it and get the fileName
+          profPic = `https://jtmt.sharepoint.com/sites/portal/_layouts/15/userphoto.aspx?size=L&username=${i?.EmployeeEmail}`;
+        }
+
         i.EmployeePhoto = profPic;
       } catch (error) {
         console.error("Error fetching employee photo", error);
@@ -296,13 +303,6 @@ export default class Birthdays extends React.Component<
             <GTMarket context={this.props.context} sp={this.props.sp} gtMarketListId={this.props.GTMarketListID} GTMarketImageListId={this.props.GTMarketImageListId} switchPostTime={this.props.switchPostTime} />
           </div>
 
-          {/* <div>
-            <MoviesAndSeries
-              sp={this.props.sp}
-              MoviesAndSeriesId={this.props.MoviesAndSeriesId}
-              context={this.props.context}
-            />
-          </div> */}
           <div className={`${styles.BirthdaysLeftContainer}`}>
 
             <div className={`${styles.BirthdaysContainer}`}>
@@ -349,7 +349,7 @@ export default class Birthdays extends React.Component<
                           >
                             <img
                               // src={this.onPictureConverterUrl(People?.EmployeePhoto, People?.Id)}
-                              src={People?.EmployeePhoto || DefaultProfilePic}
+                              src={People?.EmployeePhoto !== '' ? People?.EmployeePhoto : DefaultProfilePic}
                               alt=""
                               className={styles.peopleImg}
                             />
@@ -384,12 +384,10 @@ export default class Birthdays extends React.Component<
                                     <span className={styles.modalHeader}>
                                       מזל טוב {People.Title}!
                                     </span>
-
                                     <img
                                       // src={this.onPictureConverterUrl(People.EmployeePhoto, People.Id)}
                                       src={
-                                        People?.EmployeePhoto ||
-                                        DefaultProfilePic
+                                        People?.EmployeePhoto !== '' ? People?.EmployeePhoto : DefaultProfilePic
                                       }
                                       alt=""
                                       className={styles.peopleImgInModal}

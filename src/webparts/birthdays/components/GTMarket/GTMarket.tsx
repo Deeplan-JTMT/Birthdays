@@ -93,7 +93,7 @@ export default function GTMarket(props: GTMarketProps) {
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         runTimer()
 
-        // מנקים טיימר ביציאה/שינוי עמוד
+        // מנקים טיימר ביציאה/שינוי עמוד 
         return () => clearTimeout(timeoutRef.current);
     }, [page, gtMessages.length]);
 
