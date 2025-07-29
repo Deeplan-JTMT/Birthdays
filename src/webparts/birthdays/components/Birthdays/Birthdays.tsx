@@ -300,7 +300,14 @@ export default class Birthdays extends React.Component<
           className={`${styles.BirthdaysBackGroundImage}`}
         >
           <div className={styles.BirthdaysGTMarketContainer}>
-            <GTMarket context={this.props.context} sp={this.props.sp} gtMarketListId={this.props.GTMarketListID} GTMarketImageListId={this.props.GTMarketImageListId} switchPostTime={this.props.switchPostTime} />
+            <GTMarket 
+              context={this.props.context} 
+              sp={this.props.sp} 
+              gtMarketListId={this.props.GTMarketListID} 
+              GTMarketImageListId={this.props.GTMarketImageListId} 
+              switchPostTime={this.props.switchPostTime}
+              isBirthdayModalOpen={this.state.IsModal}
+            />
           </div>
 
           <div className={`${styles.BirthdaysLeftContainer}`}>
@@ -503,6 +510,7 @@ export default class Birthdays extends React.Component<
               SpotlightId={this.props.SpotlightId}
               context={this.props.context}
               SpotlightInterval={this.props.SpotlightInterval}
+              isModalOpen={this.state.IsModal}
             />
           </div>
         </div>

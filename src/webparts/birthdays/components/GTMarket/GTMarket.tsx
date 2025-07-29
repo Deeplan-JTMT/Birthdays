@@ -29,6 +29,7 @@ interface GTMarketProps {
     gtMarketListId: string;
     GTMarketImageListId: string;
     switchPostTime: number;
+    isBirthdayModalOpen?: boolean; // Add this prop to control timer
 }
 
 const cacheRtl = createCache({
@@ -50,20 +51,19 @@ export default function GTMarket(props: GTMarketProps) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [page, setPage] = React.useState<number>(0);
     const [reRender, setReRender] = React.useState<number>(0);
+    const [isHoveringOverMessage, setIsHoveringOverMessage] = React.useState<boolean>(false);
     const open = Boolean(anchorEl);
     const timeoutRef = React.useRef<number | undefined>(undefined);
+    const isAnyModalOpen = showForm || props.isBirthdayModalOpen || open || isHoveringOverMessage;
 
     const pauseTimer = () => {
-        console.log("stop timer");
-        clearTimeout(timeoutRef.current)
-        console.log("rows before reset: ", gtMessages);
-
+        clearTimeout(timeoutRef.current);
+        setIsHoveringOverMessage(true);
     };
+    
     const startTimer = () => {
-        console.log("start timer");
-        runTimer()
-        console.log("rows after reset: ", gtMessages);
-
+        setIsHoveringOverMessage(false);
+        runTimer();
     }
 
     React.useEffect(() => {
@@ -82,25 +82,37 @@ export default function GTMarket(props: GTMarketProps) {
                 return;                        // ואל תעשה מודולו
             }
 
-            setPage(prev => (prev + 1) % pages);  // תמיד pages ≥ 1
+            if (pages === 1) {               // ↙︎ יש רק פוסט אחד ➞ אל תזוז
+                setPage(0);                    // שמור state חוקי
+                return;                        // ואל תעשה מודולו
+            }
+
+            setPage(prev => (prev + 1) % pages);  // תמיד pages ≥ 2
         }, props.switchPostTime * 1000);
     }
 
     // האפקט שמנהל את הטיימר
     React.useEffect(() => {
         if (gtMessages.length === 0) return;
+        
+        // אם יש תפריט פתוח, אל תתחיל טיימר
+        if (isAnyModalOpen) {
+            if (timeoutRef.current) clearTimeout(timeoutRef.current);
+            return;
+        }
+        
         // בכל שינוי עמוד – מנקים טיימר ישן, מתחילים חדש
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
         runTimer()
 
         // מנקים טיימר ביציאה/שינוי עמוד 
         return () => clearTimeout(timeoutRef.current);
-    }, [page, gtMessages.length]);
+    }, [page, gtMessages.length, isAnyModalOpen]);
 
     function getPageNumber() {
         return filterList
             ? gtMessages.filter(m => m.creatorName === currentUser?.Title).length   // my items
-            : gtMessages.length
+            : gtMessages.length;
     }
 
     const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -143,7 +155,6 @@ export default function GTMarket(props: GTMarketProps) {
                 rows.forEach(row => data.push(row))
             }
             catch (err) {
-                console.log("error: ", err);
                 break;
             }
         }
@@ -156,7 +167,6 @@ export default function GTMarket(props: GTMarketProps) {
         try {
             const currUser: ISiteUserInfo = await props.sp.web.currentUser();
             serCurrentUser(currUser)
-            console.log("rows: ", rows)
             return rows.map((item): GTMessageType => ({
                 creationDate: moment(item.Created).format(DATE_FORMAT).toString(),                   // DateTime → Moment
                 itemName: item.itemName || "",          // fallbacks if field differs
@@ -173,7 +183,6 @@ export default function GTMarket(props: GTMarketProps) {
             }));
         }
         catch (err) {
-            console.log("error:", err);
             return [];
         }
     }
@@ -184,13 +193,17 @@ export default function GTMarket(props: GTMarketProps) {
             setGtMessages(prev => prev.filter(message => message.itemId !== itemId))
         }
         catch (err) {
-            console.error("error caught during item or image delete: ", err)
+            // Error handling
         }
     }
 
-    function showAdditionForm() { setShowForm(true) }
+    function showAdditionForm() { 
+        setShowForm(true);
+    }
 
-    function closeAdditionForm() { setShowForm(false) }
+    function closeAdditionForm() { 
+        setShowForm(false);
+    }
     const pages = Math.ceil(gtMessages.length / 2);
     return (
         <CacheProvider value={cacheRtl}>

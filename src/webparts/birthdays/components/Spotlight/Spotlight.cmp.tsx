@@ -19,6 +19,7 @@ interface SpotlightProps {
     SpotlightId: string;
     context: WebPartContext;
     SpotlightInterval: number;
+    isModalOpen?: boolean; // Add this prop to control timer
 }
 
 interface SpotlightState {
@@ -33,7 +34,7 @@ const defaultSpotlightState: SpotlightState = {
     isLoading: true, // Introduce a loading state
 };
 
-export default function Spotlight({ sp, SpotlightId, context, SpotlightInterval }: SpotlightProps) {
+export default function Spotlight({ sp, SpotlightId, context, SpotlightInterval, isModalOpen = false }: SpotlightProps) {
     const [state, setState] = React.useState<SpotlightState>(defaultSpotlightState);
 
     React.useEffect(() => {
@@ -52,6 +53,9 @@ export default function Spotlight({ sp, SpotlightId, context, SpotlightInterval 
     }, []);
 
     React.useEffect(() => {
+        // Don't start timer if modal is open
+        if (isModalOpen || state.employeesList.length === 0) return;
+
         const interval = setInterval(() => {
             setState(prevState => ({
                 ...prevState,
@@ -60,7 +64,7 @@ export default function Spotlight({ sp, SpotlightId, context, SpotlightInterval 
         }, SpotlightInterval);
 
         return () => clearInterval(interval); // Cleanup the interval on component unmount
-    }, [state.isLoading, state.employeesList.length]);
+    }, [state.isLoading, state.employeesList.length, isModalOpen]);
 
     const currentEmployee = state?.employeesList[state.currentIndex];
 
