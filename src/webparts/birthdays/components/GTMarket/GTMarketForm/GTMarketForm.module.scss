@@ -49,4 +49,26 @@
 
 .imageUploader {
     width: fit-content;
-  }
+}
+
+.imageUploadContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: flex-start;
+}
+
+.hiddenFileInput {
+    display: none;
+}
+
+.uploadButton {
+    width: fit-content;
+    min-width: 120px;
+}
+
+.selectedFile {
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 0.25em;
+}

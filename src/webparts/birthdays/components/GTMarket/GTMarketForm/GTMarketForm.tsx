@@ -138,7 +138,39 @@ export default function GTMarketForm(props: GTMarketFormProps) {
                         name='phoneNumber'
                         onChange={(event) => handleChange('phoneNumber', event.target.value)}
                     />
-                    <input className={styles.imageUploader} type='file' aria-label='צרף תמונה' onChange={(e) => changeImage(e.target.files)} accept='image/*' id='imageUploader' />
+                    <div className={styles.imageUploadContainer}>
+                        <input 
+                            className={styles.hiddenFileInput} 
+                            type='file' 
+                            aria-label='צרף תמונה' 
+                            onChange={(e) => changeImage(e.target.files)} 
+                            accept='image/*' 
+                            id='imageUploader' 
+                            ref={(input) => {
+                                if (input) {
+                                    (window as any).fileInputRef = input;
+                                }
+                            }}
+                        />
+                        <Button
+                            variant="outlined"
+                            component="label"
+                            className={styles.uploadButton}
+                            onClick={() => {
+                                const fileInput = (window as any).fileInputRef;
+                                if (fileInput) {
+                                    fileInput.click();
+                                }
+                            }}
+                        >
+                            צרף תמונה
+                        </Button>
+                        {formData.imageFile && (
+                            <div className={styles.selectedFile}>
+                                קובץ נבחר: {formData.imageFile.name}
+                            </div>
+                        )}
+                    </div>
 
                 </div>
                 <div className={styles.buttonsContainer}>
