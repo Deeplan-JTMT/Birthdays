@@ -40,7 +40,8 @@ export default function Spotlight({ sp, SpotlightId, context, SpotlightInterval,
     React.useEffect(() => {
         const fetchSpotlight = async () => {
             const items: Employee[] = await sp.web.lists.getById(SpotlightId).items
-                .select('Title', 'employeeName', 'employeePhoto', 'eventBlessing', 'eventDescription', 'isDisplay', 'Index', 'ID', 'employeeEmail')
+                .select('Title', 'employeeName', 'employeePhoto'
+                    , 'eventBlessing', 'eventDescription', 'isDisplay', 'Index', 'ID', 'employeeEmail')
                 .orderBy('Index')()
                 .then(items => items.filter(item => item.isDisplay)); // Assuming you want to filter by `isDisplay`
             setState(prevState => ({
@@ -70,11 +71,12 @@ export default function Spotlight({ sp, SpotlightId, context, SpotlightInterval,
 
     const onPictureConverterUrl = (imageFromSP: any, id: number): string => {
         let imageUrl
-
+         console.log(imageFromSP.employeePhoto);
+         
         if (imageFromSP.employeeEmail !== null && imageFromSP.employeeEmail !== "") {
+            const photoData = JSON.parse(imageFromSP.employeePhoto);
 
-
-            imageUrl = `https://projects1.sharepoint.com/sites/portal/_layouts/15/userphoto.aspx?size=L&username=${imageFromSP.employeeEmail}`;
+            imageUrl = `https://jtmt.sharepoint.com/sites/JTMT/Lists/EmployeeSpotlight/Attachments/${id}/${photoData.fileName}`;
             console.log(imageUrl);
         } else {
             imageUrl = require("../../assets/profilePicDemo.jpg")
@@ -85,6 +87,8 @@ export default function Spotlight({ sp, SpotlightId, context, SpotlightInterval,
 
     return (
         <div className={styles.spotlightContainer}>
+            {console.log(currentEmployee)}
+            
             {currentEmployee && (
                 <div>
                     <div style={{ display: 'flex', justifyContent: "center" }} className={`${styles.title}`}>

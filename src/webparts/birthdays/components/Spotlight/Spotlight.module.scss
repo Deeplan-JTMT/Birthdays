@@ -42,7 +42,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 90%;
+        width: 150px;
+        height: 150px;
 
         .peopleImg {
             width: 60%;
@@ -57,17 +58,16 @@
     }
 
     .eventDescription {
-        max-width: 80%;
+        max-width: 95%;
         justify-self: baseline;
-        width: auto;
+        height: 70%;
+        overflow:hidden;
+        overflow-y: scroll;
+
     }
 }
 
-@media (max-width: 1024px) {
-    .item .imageContainer {
-        width: 60%;
-    }
-}
+
 
 @media (max-width: 768px) {
 
